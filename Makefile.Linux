@@ -1,0 +1,5 @@
+DEBUG= -Wall -g
+CPPFLAGS=$(INC) $(DEBUG) -fPIC $(DEBUGFLAGS)
+CFLAGS=$(CPPFLAGS)
+LDFLAGS=-shared
+#LDFLAGS=-Bshareable

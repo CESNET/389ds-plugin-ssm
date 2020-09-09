@@ -1,0 +1,46 @@
+# $Id: Makefile,v 1.1 1999/07/20 14:35:12 sova Exp sova $
+
+INC=-I/usr/netscape/server4/plugins/slapd/slapi/include
+DEBUG=-g #-Wall
+CFLAGS=$(INC) $(DEBUG) -fPIC -D_REENTRANT -DDEBUG=1 
+LDFLAGS=-shared  -msym #-expect_unresolved "*" -msym 
+PLUGINDIR=/usr/netscape/server4/lib
+
+#LDFLAGS=-Bshareable
+
+INSTALL=installbsd
+
+HDR	= udb.h md5.h otp_password.h
+SRC	= udb.c otp_password.c md5c.c btoe.c
+OBJS	= $(SRC:.c=.o)
+#udb.o otp_password.o md5c.o
+
+all:	udb.so
+
+udb.so:	$(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS)
+
+test-preop.so: test-preop.o
+	$(LD) $(LDFLAGS) -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	-rm -f *.so *.o
+
+checkin: $(SRC)
+	$(CI) -l -t-init -m"" $(SRC)
+
+tags:	$(SRC)
+	etags $(SRC) $(HDR)
+
+install: udb.so
+	$(INSTALL) -c -g ldap -o ldap -o 755 udb.so $(PLUGINDIR)
+
+install: udb.so
+	$(INSTALL) -c -g ldap -o ldap -o 755 udb.so $(PLUGINDIR)
+
+depend:
+	-makedepend -Y $(SRC) >/dev/null 2>&1
+

@@ -1,0 +1,46 @@
+# $Id: Makefile.linux,v 1.2 1999/08/20 18:24:12 sova Exp sova $
+
+INC=-I/usr/netscape/server4/plugins/slapd/slapi/include
+DEBUG=-g -Wall
+CFLAGS=$(INC) $(DEBUG) -fPIC -DDEBUG=16
+LDFLAGS=-shared
+#LDFLAGS=-Bshareable
+
+HDR	= udb.h md5.h otp_password.h
+SRC	= udb.c otp_password.c md5c.c btoe.c udb_hash.c rdwr.c otp_sasl.c
+#udb_conf.c
+OBJS	= $(SRC:.c=.o)
+#udb.o otp_password.o md5c.o
+
+all:	udb.so
+
+udb.so:	$(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS)
+
+test-preop.so: test-preop.o
+	$(LD) $(LDFLAGS) -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	-rm -f *.so *.o
+
+checkin: $(SRC)
+	$(CI) -l -t-init -m"" $(SRC)
+
+tags:	$(SRC)
+	etags $(SRC) $(HDR)
+
+depend:
+	$(CC) $(CFLAGS) -MM $(SRC)
+#	-makedepend -Y $(SRC) >/dev/null 2>&1
+
+# DO NOT DELETE
+
+udb.o: udb.h otp_password.h
+otp_password.o: udb.h otp_password.h md5.h
+md5c.o: md5.h
+btoe.o: otp_password.h md5.h
+udb_hash.o: udb_hash.h rdwr.h
+rdwr.o: rdwr.h

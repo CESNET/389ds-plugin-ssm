@@ -1,0 +1,1 @@
+slapi_log_error -> slapi_log_*_ex
