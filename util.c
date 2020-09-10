@@ -3,7 +3,6 @@
 static char rcsid[] = "$Id: util.c,v 1.2 1999/08/20 18:24:12 sova Exp sova $";
 #endif /* lint */
 
-#include <string.h>
 #include "slapi-plugin.h"
 #include "util.h"
 #include "udb_log.h"
@@ -65,7 +64,7 @@ int get_target_entry (Slapi_DN *dn,Slapi_Entry **entry, int conn, void *caller) 
   if (ret != LDAP_SUCCESS) {
     log_err(ERR_LDAP_OPERATION,ident,
       "Internal search (dn:%s) error: %s\n",
-      dn,ldap_err2string(ret));
+      slapi_sdn_get_dn(dn),ldap_err2string(ret));
   }
   return ret;
 }

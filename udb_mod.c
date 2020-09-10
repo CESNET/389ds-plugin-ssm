@@ -1,10 +1,11 @@
 
 #ifndef lint
-static char rcsid[] = "$Id: udb_mod.c,v 1.4 2010/03/01 08:00:00 root Exp root $";
+static char rcsid[] = "$Id: udb_mod.c,v 1.3 2003/10/27 16:02:49 root Exp root $";
 #endif /* lint */
 
+#include <stdlib.h>	/* strtol */
 #include <string.h>	/* strcasecmp */
-#include <slapi-plugin.h>
+#include "slapi-plugin.h"
 #include "udb_config.h"
 #include "util.h"
 #include "udb_mod.h"
@@ -41,8 +42,9 @@ int apply_ruleset (int conn,
       i++;
     }
   }
+
   if (debug & DBG_CONS)
-    //    slapi_log_error(LOG_("found %d matching rules\n"),i);
+      slapi_log_error(LOG_("found %d matching rules\n"),i);
 
   /* alloc array for LDAPMod's */
   mods = (LDAPMod **)slapi_ch_calloc(nmods+1,sizeof(LDAPMod*));
@@ -312,17 +314,16 @@ int ssm_init(Slapi_PBlock * pb) {
   int	ac;
   char	**ag;
   mod_priv	*prv;
-
-
-  rc |= slapi_pblock_set(            
+//return 0;
+  rc |= slapi_pblock_set(            /* Plug-in API version           */
 			 pb,
 			 SLAPI_PLUGIN_VERSION,
 			 SLAPI_PLUGIN_CURRENT_VERSION
 			 );
   if (rc)
-    log_err(SLAPI_LOG_TRACE, "SSM:ssm_init", "pblock_set VERSION: %d\n", rc);
+    log_err(1, "SSM:ssm_init", "pblock_set VERSION: %d\n", rc);
 
-  rc |= slapi_pblock_set(            
+  rc |= slapi_pblock_set(            /* Plug-in description           */
 			 pb,
 			 SLAPI_PLUGIN_DESCRIPTION,
 			 (void *) &ssm_desc
@@ -334,10 +335,10 @@ int ssm_init(Slapi_PBlock * pb) {
 			 SLAPI_PLUGIN_ARGC,
 			 &ac);
   if (rc)
-    slapi_log_error(1, "SSM:ssm_init", "Can't get argument count: %d\n", rc);
+    log_err(1, "SSM:ssm_init", "Can't get argument count: %d\n", rc);
   
   if (ac < 1) {
-    slapi_log_error(1, "SSM:ssm_init", "Bad argument count (expecting one filename and optionally a debug level)\n");
+    log_err(1, "SSM:ssm_init", "Bad argument count (expecting one filename and optionally a debug level)\n");
     return -1;
   }
 
@@ -345,19 +346,19 @@ int ssm_init(Slapi_PBlock * pb) {
 			 SLAPI_PLUGIN_ARGV,
 			 &ag);
   if (rc) {
-    slapi_log_error(1, "SSM:ssm_init", "Can't get arguments\n");
+    log_err(1, "SSM:ssm_init", "Can't get arguments\n");
     return -1;
   }
 
   prv = (mod_priv*)slapi_ch_calloc(1,sizeof(mod_priv));
   
   if ((prv->rs = parse_config(ag[0])) == NULL) {
-    slapi_log_error(1, "SSM:ssm_init", "Error reading config file \"%s\"\n", ag[0]);
+    log_err(1, "SSM:ssm_init", "Error reading config file \"%s\"\n", ag[0]);
     return -1;
   }
 
   if (ac > 1) {
-    prv->debug = atoi(ag[1]);
+    prv->debug = strtol(ag[1], 0, 0);	/* FIXME: should accep ONLY allowed values  */
   } else {
     prv->debug = 0;
   }
@@ -367,28 +368,28 @@ int ssm_init(Slapi_PBlock * pb) {
 			 (void *)prv);
 
   if (rc) {
-      slapi_log_error(1, "SSM:ssm_init", "pblock_set PRIVATE: %d\n", rc);
+      log_err(1, "SSM:ssm_init", "pblock_set PRIVATE: %d\n", rc);
     return -1;
   }
 
-  rc |= slapi_pblock_set(            
+  rc |= slapi_pblock_set(            /* Post-modify function          */
 			 pb,
-			 SLAPI_PLUGIN_POST_MODIFY_FN,
+			 SLAPI_PLUGIN_PRE_MODIFY_FN,
 			 (void *) cons_mod
 			 );
   if (rc)
-    slapi_log_error(1,
+    log_err(1,
 		       "SSM:ssm_init",
 		       "pblock_set POST_MOD_FN: %d\n",
 		     rc);
 
   rc |= slapi_pblock_set(
 			 pb,
-			 SLAPI_PLUGIN_POST_ADD_FN,
+			 SLAPI_PLUGIN_PRE_ADD_FN,
 			 (void *) cons_add
 			 );
   if (rc)
-    slapi_log_error(1,
+    log_err(1,
 		       "SSM:ssm_init",
 		       "pblock_set POST_ADD_FN: %d\n",
 		       rc);
@@ -398,14 +399,12 @@ int ssm_init(Slapi_PBlock * pb) {
 			&ssm_plugin_id);
 
   if (rc)
-    slapi_log_error(1,
+    log_err(1,
 		       "SSM:ssm_init",
 		       "returning %d\n",
 		       rc);
   log_info("SSM:init","returning %d", rc);
- 
   return (rc);
-  
 }
 
 #if 0
@@ -444,15 +443,15 @@ int udb_mod_postop (Slapi_PBlock *pb)
   }
 
   if (ac > 1) {
-    prv->debug = atoi(ag[1]);
+    prv->debug = strtol(ag[1],0,0);
   } else {
     prv->debug = 0;
   }
 
   if (slapi_pblock_set(pb, SLAPI_PLUGIN_VERSION, SLAPI_PLUGIN_VERSION_01) 
       || slapi_pblock_set(pb,SLAPI_PLUGIN_DESCRIPTION,(void *)&desc )
-      || slapi_pblock_set(pb,SLAPI_PLUGIN_POST_MODIFY_FN,(void*)cons_mod)
-      || slapi_pblock_set(pb,SLAPI_PLUGIN_POST_ADD_FN,(void*)cons_add)) {
+      || slapi_pblock_set(pb,SLAPI_PLUGIN_PRE_MODIFY_FN,(void*)cons_mod)
+      || slapi_pblock_set(pb,SLAPI_PLUGIN_PRE_ADD_FN,(void*)cons_add)) {
     slapi_log_error(SLAPI_LOG_PLUGIN,ident,"Can't register plugin\n");
     return -1;
   }

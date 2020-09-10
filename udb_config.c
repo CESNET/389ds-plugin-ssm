@@ -141,7 +141,7 @@ void cfg_ruleset_free(cfg_ruleset **rs)
 
 cfg_ruleset *parse_config (char *path) 
 {
-//  char ident[] = MIDENT("parse_config");
+  /*char	ident[] = MIDENT("parse_config");*/
   FILE *cfg;
   char line[LINESZ];
   int lineno = 0;
@@ -208,7 +208,7 @@ cfg_ruleset *parse_config (char *path)
 
 int parse_ruleset(cfg_ruleset *rs, int lineno, char *r)
 {
-//  char		ident[] = MIDENT("parse_ruleset");
+  /*char		ident[] = MIDENT("parse_ruleset");*/
   char		*cp,*start;
   int		nattr,i;
 
@@ -245,7 +245,7 @@ int parse_ruleset(cfg_ruleset *rs, int lineno, char *r)
 
 int parse_rule(cfg_rule *rule,int lineno,char *r)
 {
-//  char		ident[] = MIDENT("parse_rule");
+  /*char		ident[] = MIDENT("parse_rule");*/
   char 		*cp;
   cfg_mod 	*cmod = NULL;
   char		**strvals = NULL;

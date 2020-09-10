@@ -7,7 +7,8 @@ DEBUGFLAGS=-DDEBUG=512
 include Makefile.$(OS)
 
 #INC=-I/usr/netscape/server4/plugins/slapd/slapi/include
-INC=-I/usr/include/dirsrv -I/usr/include/nspr4 -I/usr/include/mozldap
+#INC=-I/usr/local/directory-5.2/plugins/slapd/slapi/include
+INC=-I/usr/include/dirsrv -I/usr/include/nspr
 HDR	= udb.h md5.h otp_password.h
 SRC	= udb.c otp_password.c md5c.c btoe.c udb_hash.c rdwr.c otp_sasl.c \
 	util.c udb_config.c udb_mod.c udb_func.c
@@ -62,8 +63,10 @@ tags:	$(SRC)
         | sed '\''s/\($*\)\.o[ :]*/\1.o $@ : /g'\'' > $@; \
         [ -s $@ ] || rm -f $@'
 
-include $(SRC:.c=.d)
+#include $(SRC:.c=.d)
 
+install:
+	cp *.so ../../plugins
 depend:
 	$(CC) $(CFLAGS) -MM $(SRC) > depend
 #	-makedepend -Y $(SRC) >/dev/null 2>&1

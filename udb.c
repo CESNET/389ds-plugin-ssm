@@ -574,12 +574,10 @@ int post_init(Slapi_PBlock *pb) {
   }
   ug->otp_seed_prefix = ag[1];
 
-
   if (slapi_pblock_set(pb,SLAPI_PLUGIN_PRIVATE,(void *)ug)) {
     slapi_log_error(SLAPI_LOG_PLUGIN,"OTP","Can't set global data\n");
     return -1;
   }
-  
 #if notdef
   {
     // FAKE

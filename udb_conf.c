@@ -39,7 +39,7 @@ int get_cfg (Slapi_PBlock *pb) {
     for (i = ac; i; i++)
       strcat(tmpbuf," %s");
 
-//    slapi_log_error(SLAPI_LOG_PLUGIN,ident,tmpbuf,file,line,ag);
+    slapi_log_error(SLAPI_LOG_PLUGIN,ident,tmpbuf,file,line,ag);
   }
   return 0;
 }
