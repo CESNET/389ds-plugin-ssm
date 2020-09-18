@@ -57,7 +57,7 @@ Posible actions are:
 
 | ACTION         | Explanation |
 | ---            | --- |
-| !opinit_time() | Place timestamp of entry modification into TARGET-ATTRIBUTE |
-| !conn_dn()     | Place modifiers DN into TARGET-ATTRIBUTE |
-| !concat(a, b, ...) | Serialize strings a, b, ... and separate them by ` ` a space. If first argument is preceeded by ``$`` than it is interpreted as value of attribute. |
-| string1, string2 | Multiple strings is interpreted as multiple values assinged into TARGET-ATTRIBUTE |
+| `!opinit_time()` | Place timestamp of entry modification into TARGET-ATTRIBUTE |
+| `!conn_dn()`     | Place modifiers DN into TARGET-ATTRIBUTE |
+| `!concat(a, b, ...)` | Serialize strings a, b, ... and separate them by ` ` a space. If first argument is preceeded by ``$`` than it is interpreted as value of attribute. |
+| `string1, string2` | Multiple strings is interpreted as multiple values assinged into TARGET-ATTRIBUTE |
