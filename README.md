@@ -2,6 +2,9 @@
 
 Server Side Modification plugin
 
+The plugin provides facilities for server-side updating entry based on
+it's attribute values, modifiers DN and time.
+
 ## Compilation
 
 ```sh
@@ -61,3 +64,37 @@ Posible actions are:
 | `!conn_dn()`     | Place modifiers DN into TARGET-ATTRIBUTE |
 | `!concat(a, b, ...)` | Serialize strings a, b, ... and separate them by ` ` a space. If first argument is preceeded by ``$`` than it is interpreted as value of attribute. |
 | `string1, string2` | Multiple strings is interpreted as multiple values assinged into TARGET-ATTRIBUTE |
+
+### Examples
+
+Every time ``entryStatus`` is modified update ``entryStatusTimestamp``
+with modification timestamp and ``entryStatusModifier`` with modifiers DN:
+
+```
+entrystatus
+  (objectclass=*)	=entrystatustimestamp=!opinit_time()	=entrystatusmodifier=!conn_dn()
+```
+
+Every time anything is changed on entry construct ``mail`` attribute:
+```
+*
+  (uid=*)       mail=!concat(uid, @example.com)
+```
+
+Every time ``userPassword`` is updated record change timestamp in ``passwordTimestamp`` attribute:
+
+```
+userpassword
+	(objectclass=*)	=passwordtimestamp=!opinit_time()
+```
+
+## Authors
+
+This plugin was written by Milan Sova for Sun ONE Directory Server 4
+around year 1999. At the time he was working for Faculty of Electrical
+Engeneering of the Czech Technical University in Prague (FEL
+CTU). Later he moved to CESNET.
+
+The plugin was ported for 389 Directory Server 1.4 by Jiří Cejp from FEL CTU.
+
+It was documented and published by [Jan Tomášek](https://github.com/semik) from CESNET.
