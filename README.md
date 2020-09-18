@@ -78,14 +78,14 @@ entrystatus
 Every time anything is changed on entry construct ``mail`` attribute:
 ```
 *
-  (uid=*)       mail=!concat(uid, @example.com)
+  (uid=*)	mail=!concat(uid, @example.com)
 ```
 
 Every time ``userPassword`` is updated record change timestamp in ``passwordTimestamp`` attribute:
 
 ```
 userpassword
-	(objectclass=*)	=passwordtimestamp=!opinit_time()
+  (objectclass=*)	=passwordtimestamp=!opinit_time()
 ```
 
 ## Authors
