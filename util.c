@@ -1,8 +1,3 @@
-
-#ifndef lint
-static char rcsid[] = "$Id: util.c,v 1.2 1999/08/20 18:24:12 sova Exp sova $";
-#endif /* lint */
-
 #include "slapi-plugin.h"
 #include "util.h"
 #include "udb_log.h"

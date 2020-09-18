@@ -1,8 +1,3 @@
-
-#ifndef lint
-static char rcsid[] = "$Id$";
-#endif /* lint */
-
 #include <string.h>
 #include <time.h>
 #include "slapi-plugin.h"

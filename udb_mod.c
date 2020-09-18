@@ -1,8 +1,3 @@
-
-#ifndef lint
-static char rcsid[] = "$Id: udb_mod.c,v 1.3 2003/10/27 16:02:49 root Exp root $";
-#endif /* lint */
-
 #include <stdlib.h>	/* strtol */
 #include <string.h>	/* strcasecmp */
 #include "slapi-plugin.h"

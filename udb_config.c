@@ -1,8 +1,3 @@
-
-#ifndef lint
-static char rcsid[] = "$Id: udb_config.c,v 1.3 1999/08/20 18:22:45 sova Exp sova $";
-#endif /* lint */
-
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
