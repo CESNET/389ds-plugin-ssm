@@ -3,7 +3,7 @@ objectClass: top
 objectClass: nsSlapdPlugin
 objectClass: extensibleObject
 cn: SSM
-nsslapd-pluginPath: /usr/local/lib/dirsrv/plugins/ssm.so
+nsslapd-pluginPath: /usr/lib/x86_64-linux-gnu/dirsrv/plugins/ssm.so
 nsslapd-pluginInitfunc: ssm_init
 nsslapd-pluginType: preoperation
 nsslapd-pluginEnabled: on
@@ -12,4 +12,4 @@ nsslapd-pluginId: SSM
 nsslapd-pluginVersion: 2.0
 nsslapd-pluginVendor: mylan
 nsslapd-pluginDescription: Server-Side Modification plugin
-nsslapd-pluginarg0: /etc/dirsrv/slapd-tykev/udb.conf
+nsslapd-pluginarg0: /etc/dirsrv/slapd-ldap/udb.conf
