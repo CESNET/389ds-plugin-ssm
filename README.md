@@ -3,7 +3,7 @@
 Server Side Modification plugin
 
 The plugin provides facilities for server-side updating entry based on
-it's attribute values, modifiers DN and time.
+it's attribute values, modifiers DN, and time.
 
 ## Compilation
 
@@ -35,8 +35,8 @@ MODIFIED-ATTRIBUTE[,MODIFIED-ATTRIBUTE]
 
 ### MODIFIED-LDAP-ATTRIBUTE
 
-Comma separated list of attributes which modification causes
-ACTION. Any attribute can be addresed as '*'.
+A comma-separated list of attributes which modification causes
+ACTION. Any attribute can be addressed as '*'.
 
 ### FILTER
 
@@ -44,26 +44,26 @@ LDAP filter for limiting entries which should be subject of an ACTION.
 
 ### ↹
 
-The TAB character serves as FILTER and OPERATION separator. Space is not permited.
+The TAB character serves as FILTER and OPERATION separator. Space is not permitted.
 
 ### OPERATION
 
-One of possilbe LDAP operations: `=` serves for REPLACE, `+` for ADD and `-` for DELETE.
+One of possible LDAP operations: `=` serves for REPLACE, `+` for ADD, and `-` for DELETE.
 
 ### TARGET-ATTRIBUTE
 
-Atribute which should be modified by an ACTION.
+An attribute that should be modified by an ACTION.
 
 ### ACTION
 
-Posible actions are:
+Possible actions are:
 
 | ACTION         | Explanation |
 | ---            | --- |
 | `!opinit_time()` | Place timestamp of entry modification into TARGET-ATTRIBUTE |
 | `!conn_dn()`     | Place modifiers DN into TARGET-ATTRIBUTE |
-| `!concat(a, b, ...)` | Serialize strings a, b, ... and separate them by ` ` a space. If first argument is preceeded by ``$`` than it is interpreted as value of attribute. |
-| `string1, string2` | Multiple strings is interpreted as multiple values assinged into TARGET-ATTRIBUTE |
+| `!concat(a, b, ...)` | Serialize strings a, b, ... and separate them by ` ` a space. If the first argument is preceded by ``$`` than it is interpreted as the value of the TARGET-ATTRIBUTE. |
+| `string1, string2` | Multiple strings are interpreted as multiple values assigned into TARGET-ATTRIBUTE |
 
 ### Examples
 
@@ -91,8 +91,8 @@ userpassword
 ## Authors
 
 This plugin was written by Milan Sova for Sun ONE Directory Server 4
-around year 1999. At the time he was working for Faculty of Electrical
-Engeneering of the Czech Technical University in Prague (FEL
+around the year 1999. At the time he was working for the Faculty of Electrical
+Engineering of the Czech Technical University in Prague (FEL
 CTU). Later he moved to CESNET.
 
 The plugin was ported for 389 Directory Server 1.4 by Jiří Cejp from FEL CTU.
