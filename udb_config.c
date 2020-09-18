@@ -436,6 +436,12 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
       break;
     }
   }
+
+  if (!cmod->cmd) {
+    log_err(0, "udb_config", "Failed to correctly parse rule \"%s\" from line %d, no cmd defined (missing TAB?)\n", r, lineno);
+    goto err;
+  }
+
   return 0;
 
  err:
