@@ -4,7 +4,7 @@
 # define UDB_LOG_H
 
 #define MODULE_NAME	"SSM"
-#define	MIDENT(x)	"SSM:x"
+#define	MIDENT(x)	MODULE_NAME":"x
 
 
 #define ERR_PBLOCK		1
