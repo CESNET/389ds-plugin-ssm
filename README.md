@@ -78,7 +78,7 @@ entrystatus
 Every time anything is changed on entry construct ``mail`` attribute by concating content of ``uid`` ttribute and string ``@example.com``:
 ```
 *
-  (uid=*)	mail=!concat($uid, @example.com)
+  (uid=*)	mail=!concat($uid,@example.com)
 ```
 
 Every time ``userPassword`` is updated record change timestamp in ``passwordTimestamp`` attribute:
