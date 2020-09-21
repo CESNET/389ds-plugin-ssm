@@ -144,7 +144,7 @@ cfg_ruleset *parse_config (char *path)
   cfg_rule **crule = NULL, *rule = NULL;
 
   if ((cfg = fopen(path,"r")) == NULL) {
-    log_err(0, "udb_config", "fopen %s: %s\n", path, strerror(errno));
+    log_err(0, "SSM:parse_config", "fopen %s: %s\n", path, strerror(errno));
     return NULL;
   }
 
@@ -160,7 +160,7 @@ cfg_ruleset *parse_config (char *path)
 
       if (rs == NULL) {
 	/* no ruleset started */
-	log_err(0, "udb_config", "rule without attribute list at line %d\n", lineno);
+	log_err(0, "SSM:parse_config", "rule without attribute list at line %d\n", lineno);
 	goto err;
       }
 
@@ -172,7 +172,7 @@ cfg_ruleset *parse_config (char *path)
 	*crule = cfg_rule_new();
 
       if (parse_rule(*crule,lineno,cp)) {
-	log_err(0, "udb_config", "error parsing rule %d\n" ,lineno);
+	log_err(0, "SSM:parse_config", "error parsing rule %d\n" ,lineno);
 	goto err;
       }
       crule = &(*crule)->next;
@@ -186,7 +186,7 @@ cfg_ruleset *parse_config (char *path)
       *crs = cfg_ruleset_new();
 
       if (parse_ruleset(*crs,lineno,line)) {
-	log_err(0, "udb_config", "error parsing attribute list at line %d\n" ,lineno);
+	log_err(0, "SSM:parse_config", "error parsing attribute list at line %d\n" ,lineno);
 	goto err;
       }
       crule = &(*crs)->rule;
@@ -220,7 +220,7 @@ int parse_ruleset(cfg_ruleset *rs, int lineno, char *r)
       }
       /* maybe should temporarily set C locale */
       if (!(isalnum(*cp) || *cp == ';' || *cp == '-')) {
-	log_err(0, "udb_config","character \"%c\" not allowed in attribute name at line %d\n",
+	log_err(0, "SSM:parse_ruleset","character \"%c\" not allowed in attribute name at line %d\n",
 	   *cp,lineno);
 	return -1;
       }
@@ -274,7 +274,7 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
       if (state == ST_MOD_TYPE) {
 	*tcp = 0;
 	if (strlen(tbuf) == 0) {
-	  log_err(0, "udb_config", "empty mod_type at line %d\n", lineno);
+	  log_err(0, "SSM:parse_rule", "empty mod_type at line %d\n", lineno);
 	  goto err;
 	}
 	cmod->mod_type = mystrdup(tbuf);
@@ -290,14 +290,15 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
 	  }
 	  if ((cmd = find_cmd(cmd_list,tbuf,tcp - tbuf)) == NULL) {
 	    *tcp = 0;
-	    log_err(0, "udb_config","\"%s\": unknown command at line %d\n" ,tbuf,lineno);
+	    log_err(0, "SSM:parse_rule","\"%s\": unknown command at line %d\n",
+		    tbuf, lineno);
 	    goto err;
 	  }
 	  cmod->cmd = cmd;
 	  
 	  /* function parameters */
 	  if (*cp != '(') {
-	    log_err(0, "udb_config","expected '(' instead of %c at line %d\n",
+	    log_err(0, "SSM:parse_rule","expected '(' instead of %c at line %d\n",
 	       *cp,lineno);
 	    goto err;
 	  }
@@ -383,7 +384,7 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
 	if (*cp == ',')
 	  break;
 	if (cmod->cmd->ac != -1 && cmod->cmd->ac != strvalcnt) {
- cmod = rule->mods;	  log_err(0, "udb_config", "Function %s: bad argument count (%d) should be %d\n",
+ cmod = rule->mods;	  log_err(0, "SSM:parse_rule", "Function %s: bad argument count (%d) should be %d\n",
 	     cmod->cmd->name, strvalcnt, cmod->cmd->ac);
 	  goto err;
 	}
@@ -398,7 +399,7 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
 	strvalcnt = 0;
 	break;
       default:
-	log_err(0, "udb_config", "unexpected delimiter at line %d: \"<%c>%s\"\n",
+	log_err(0, "SSM:parse_rule", "unexpected delimiter at line %d: \"<%c>%s\"\n",
 	   lineno,*cp,cp);
 	goto err;
       }
@@ -418,7 +419,7 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
 	cmod->mod_op = LDAP_MOD_REPLACE;
 	break;
       default:
-	log_err(0, "udb_config", "unknown operator \"%c\" at line %d\n",*cp,lineno);
+	log_err(0, "SSM:parse_rule", "unknown operator \"%c\" at line %d\n",*cp,lineno);
 	goto err;
       }
       state = ST_MOD_TYPE;
@@ -437,7 +438,7 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
   }
 
   if (!cmod->cmd) {
-    log_err(0, "udb_config", "Failed to correctly parse rule \"%s\" from line %d, no cmd defined (missing TAB?)\n", r, lineno);
+    log_err(0, "SSM:parse_rule", "Failed to correctly parse rule \"%s\" from line %d, no cmd defined (missing TAB?)\n", r, lineno);
     goto err;
   }
 
