@@ -368,6 +368,10 @@ int parse_rule(cfg_rule *rule,int lineno,char *r)
       case ST_MOD_VAL:
       case ST_MOD_TYPE:
       case ST_MOD_ARG:
+	if (!cmod->cmd) {
+	    log_err(0, "SSM:parse_rule", "Failed to correctly parse rule \"%s\" from line %d, no cmd defined (missing TAB?)\n", r, lineno);
+	    goto err;
+	}
 	if (tbuf[0]) {
 	  strvalcnt++;
 	  strvals = (char **)myrealloc((char *)strvals,
